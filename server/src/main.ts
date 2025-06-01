@@ -1,13 +1,11 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import router from "./router";
 
 const server = express();
 const port = 3000;
 
 server.use(express.json());
 
-server.get("/health", (req: Request, res: Response) => {
-  res.status(200).json({ message: "Success!" });
-  return;
-});
+server.use("/api", router);
 
 server.listen(port);
