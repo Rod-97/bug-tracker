@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "../../db";
 import { users } from "../../db/schema";
+import { hashPassword } from "../../utils/password";
 
 export async function findUserByEmail(email: string) {
   const user = await db.select().from(users).where(eq(users.email, email));
@@ -17,6 +18,7 @@ export async function createUser({
   name: string;
   password: string;
 }) {
-  await db.insert(users).values({ email, name });
+  const passwordHash = await hashPassword(password);
+  await db.insert(users).values({ email, name, passwordHash });
   return { email, name };
 }
